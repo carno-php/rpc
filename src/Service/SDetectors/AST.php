@@ -116,14 +116,14 @@ class AST implements API
      */
     private function psr4init() : void
     {
-        if (defined('APP_PATH') && is_file($cj = APP_PATH . '/composer.json')) {
+        if (defined('CWD') && is_file($cj = CWD . '/composer.json')) {
             $conf = json_decode(file_get_contents($cj), true);
             foreach ($conf['autoload']['psr-4'] ?? [] as $nsp => $path) {
                 $slot = &$this->psr4al;
                 foreach (explode('\\', $nsp) as $part) {
                     $part && $slot = &$slot[$part];
                 }
-                $slot = sprintf('%s/%s', APP_PATH, $path);
+                $slot = sprintf('%s/%s', CWD, $path);
             }
         }
     }

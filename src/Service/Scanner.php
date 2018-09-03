@@ -36,7 +36,7 @@ class Scanner
     /**
      * @var string[]
      */
-    private $implements = [];
+    private $services = [];
 
     /**
      * @var Router
@@ -74,39 +74,29 @@ class Scanner
     }
 
     /**
-     * @param string ...$implements
+     * @param string ...$services
      * @return static
      */
-    public function sourcing(string ...$implements) : self
+    public function sources(string ...$services) : self
     {
-        $this->implements = $implements;
+        $this->services = array_unique(array_merge($this->services, $services));
         return $this;
     }
 
     /**
-     * @param string ...$implements
      */
-    public function servings(string ...$implements) : void
+    public function serving() : void
     {
-        if (empty($implements)) {
-            $implements = $this->implements;
-        }
-
-        array_walk($implements, function (string $implementer) {
+        array_walk($this->services, function (string $implementer) {
             $this->detector->analyzing($this->router, self::CONTRACTS_NAME, $implementer);
         });
     }
 
     /**
-     * @param string ...$implements
      */
-    public function analyzing(string ...$implements) : void
+    public function analyzing() : void
     {
-        if (empty($implements)) {
-            $implements = $this->implements;
-        }
-
-        array_walk($implements, function (string $implementer) {
+        array_walk($this->services, function (string $implementer) {
             $ref = new ReflectionClass($implementer);
 
             foreach ($ref->getInterfaces() as $inf) {
@@ -158,9 +148,7 @@ class Scanner
      */
     private function assertPBMessage(string $class) : void
     {
-        $ref = new ReflectionClass($class);
-        $parent = $ref->getParentClass();
-
+        $parent = (new ReflectionClass($class))->getParentClass();
         if (empty($parent) || $parent->getName() !== self::PB_STRUCT_BASE) {
             throw new IllegalServiceMethodDependsException(
                 "Provided class is not inherit from pb message"

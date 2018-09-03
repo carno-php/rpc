@@ -59,17 +59,13 @@ class Specification
 
     /**
      * @param array $methodRRs
-     * @return Specification
+     * @return static
      */
     public function setMethods(array $methodRRs) : self
     {
         foreach ($methodRRs as $methodName => $rrs) {
-            if (isset($rrs['in'])) {
-                $this->methodRequests[$methodName] = $rrs['in'];
-            }
-            if (isset($rrs['out'])) {
-                $this->methodResponses[$methodName] = $rrs['out'];
-            }
+            isset($rrs['in']) && $this->methodRequests[$methodName] = $rrs['in'];
+            isset($rrs['out']) && $this->methodResponses[$methodName] = $rrs['out'];
         }
         return $this;
     }
