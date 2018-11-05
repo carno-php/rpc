@@ -16,6 +16,14 @@
       "Carno\\RPC\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Carno\\RPC\\Tests\\": "tests",
+      "Carno\\RPC\\Tests\\Mocked\\": "tests/mocked-app/src",
+      "Mocked\\App\\Tests\\Contracts\\": "tests/mocked-app/api"
+    },
+    "files": ["tests/mocked-app/bootstrap.php"]
+  },
   "minimum-stability": "dev",
   "extra": {
     "branch-alias": {

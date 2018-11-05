@@ -60,13 +60,16 @@ class AST implements API
                             $imps = $stmt->children['implements'] ?? null;
                             if ($imps instanceof Node && $imps->kind === AST_NAME_LIST) {
                                 foreach ($imps->children as $use) {
-                                    if ($use->kind === AST_NAME && $use->flags === USE_NORMAL) {
-                                        $this->assigning(
-                                            $router,
-                                            $contracts,
-                                            array_slice(explode('\\', $uses[$use->children['name']] ?? ''), 0, -1)
-                                        );
-                                    }
+                                    $use->kind === AST_NAME && $this->assigning(
+                                        $router,
+                                        $contracts,
+                                        array_slice(explode(
+                                            '\\',
+                                            $use->flags === USE_NORMAL
+                                                ? ($uses[$use->children['name']] ?? '')
+                                                : $use->children['name']
+                                        ), 0, -1)
+                                    );
                                 }
                             }
                             break;
