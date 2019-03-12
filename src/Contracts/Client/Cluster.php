@@ -22,6 +22,11 @@ interface Cluster
 
     /**
      * @param string $server
+     */
+    public function leaving(string $server) : void;
+
+    /**
+     * @param string $server
      * @param string ...$tags
      * @return object
      */
