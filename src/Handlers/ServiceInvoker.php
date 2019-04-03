@@ -14,6 +14,7 @@ use Carno\Coroutine\Context;
 use function Carno\Coroutine\race;
 use function Carno\Coroutine\timeout;
 use Carno\Promise\Promised;
+use Carno\RPC\Options;
 use Carno\RPC\Service\Dispatcher;
 use Carno\RPC\Protocol\Request;
 use Carno\RPC\Protocol\Response;
@@ -27,12 +28,19 @@ class ServiceInvoker implements Layered
     private $dispatcher = null;
 
     /**
+     * @var Options
+     */
+    private $options = null;
+
+    /**
      * ServiceInvoker constructor.
      * @param Dispatcher $dispatcher
+     * @param Options $options
      */
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct(Dispatcher $dispatcher, Options $options = null)
     {
         $this->dispatcher = $dispatcher;
+        $this->options = $options ?? new Options;
     }
 
     /**
@@ -44,7 +52,7 @@ class ServiceInvoker implements Layered
     {
         return race(async(function ($request) {
             return $this->dispatcher->invoke($request);
-        }, $ctx, $request), timeout(5000));
+        }, $ctx, $request), timeout($this->options->ttExec));
     }
 
     /**

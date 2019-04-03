@@ -8,6 +8,9 @@
     "carno-php/promise": "^1.0",
     "carno-php/chain": "^1.0"
   },
+  "require-dev": {
+    "carno-php/protoc-hello": "^1.0"
+  },
   "suggest": {
     "ext-ast": "Service detecting via AST"
   },

@@ -15,6 +15,15 @@ class Instances
 {
     /**
      * @param string $class
+     * @param string|object $instance
+     */
+    public function set(string $class, $instance) : void
+    {
+        DI::set($class, is_string($instance) ? DI::object($instance) : $instance);
+    }
+
+    /**
+     * @param string $class
      * @return object
      */
     public function get(string $class) : object
